@@ -369,6 +369,7 @@ class TokenPaymentAttempt(BaseCieloObject):
             transaction=CASH,
             sandbox=False,
             use_ssl=None,
+            authorize=3,
         ):
         super(TokenPaymentAttempt, self).__init__(sandbox=sandbox, use_ssl=use_ssl)
         assert isinstance(total, Decimal), u'total must be an instance of Decimal'
@@ -391,6 +392,7 @@ class TokenPaymentAttempt(BaseCieloObject):
         self._authorized = False
         self.sandbox = sandbox
         self.url_redirect = url_redirect
+        self.authorize = authorize
 
 
 class PaymentAttempt(BaseCieloObject):
