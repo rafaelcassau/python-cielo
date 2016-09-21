@@ -257,6 +257,7 @@ class BaseCieloObject(object):
             raise GetAuthorizedException(self.error_id, self.error_message)
 
         self.status = int(self.dom.getElementsByTagName('status')[0].childNodes[0].data)
+
         if self.status != 4:
             self.error_id = self.dom.getElementsByTagName(
                 'autorizacao')[0].getElementsByTagName(
@@ -268,10 +269,32 @@ class BaseCieloObject(object):
             raise GetAuthorizedException(self.error_id, self.error_message)
 
         self.transaction_id = self.dom.getElementsByTagName('tid')[0].childNodes[0].data
-        self.pan = self.dom.getElementsByTagName('pan')[0].childNodes[0].data
+        try:
+            self.pan = self.dom.getElementsByTagName('pan')[0].childNodes[0].data
+        except:
+            self.pan = ''
 
         self._authorized = True
         return True
+
+
+class CaptureTransaction(BaseCieloObject):
+    template = 'templates/capture.xml'
+
+    def __init__(
+            self,
+            affiliation_id,
+            api_key,
+            transaction_id,
+            sandbox=False,
+            use_ssl=None, ):
+        super(CaptureTransaction, self).__init__(sandbox=sandbox, use_ssl=use_ssl)
+        self.url = SANDBOX_URL if sandbox else PRODUCTION_URL
+        self.affiliation_id = affiliation_id
+        self.api_key = api_key
+        self.transaction_id = transaction_id
+        self.sandbox = sandbox
+        self._authorized = True
 
 
 class CieloToken(BaseCieloObject):
