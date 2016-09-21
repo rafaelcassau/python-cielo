@@ -131,7 +131,10 @@ class PaymentAttempt(object):
 
         self.transaction_id = self.dom.getElementsByTagName(
             'tid')[0].childNodes[0].data
-        self.pan = self.dom.getElementsByTagName('pan')[0].childNodes[0].data
+        try:
+            self.pan = self.dom.getElementsByTagName('pan')[0].childNodes[0].data
+        except:
+            self.pan = None
 
         self._authorized = True
         return True
